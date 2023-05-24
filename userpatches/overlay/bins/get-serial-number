@@ -1,0 +1,9 @@
+#!/bin/bash
+
+partprobe
+mkdir -p /mnt/config
+if ! grep -qs '/mnt/config ' /proc/mounts; then
+    EMMC=`lsblk -n -o NAME | grep 'mmcblk[0-2]$'`
+    mount -r /dev/${EMMC}boot0p1 /mnt/config/
+fi
+cat /mnt/config/serial_number
