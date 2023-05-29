@@ -25,7 +25,7 @@ jobs:
     - name: 'Copy files'
       run: |
         cp -r Rebuild/userpatches build
-        cp Rebuild/armbian/recore.csc build/configs/boards/
+        cp Rebuild/armbian/recore.csc build/config/boards/
 
     - name: Make version number
       run: echo "VERSION=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
