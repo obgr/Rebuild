@@ -10,7 +10,6 @@ env:
 
 jobs:
   build:
-    needs: package
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
