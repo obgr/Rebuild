@@ -26,6 +26,8 @@ install_klipper(){
     cp /tmp/overlay/klipper/generic-recore-a5.cfg /home/debian/klipper/config/
     cp /tmp/overlay/klipper/generic-recore-a6.cfg /home/debian/klipper/config/
     cp /tmp/overlay/klipper/generic-recore-a7.cfg /home/debian/klipper/config/
+	cp /tmp/overlay/klipper/flash-stm32 /usr/local/bin
+	cp /tmp/overlay/klipper/flash-stm32.service /etc/systemd/system/
     mkdir -p /var/log/klipper_logs
     chown debian:debian /var/log/klipper_logs
     mkdir -p /opt/firmware/
@@ -33,13 +35,14 @@ install_klipper(){
     chown -R debian:debian klipper
     chmod +x /home/debian/klipper/scripts/install-recore.sh
     su -c "/home/debian/klipper/scripts/install-recore.sh" debian
-    wget http://feeds.iagent.no/toolchains/or1k-linux-musl.tar.xz -P /opt
+    wget http://feeds.iagent.no/toolchains/or1k-linux-musl-11.2.0.tar.xz -P /opt
     cd /opt
-    tar -xf /opt/or1k-linux-musl.tar.xz
-    rm /opt/or1k-linux-musl.tar.xz
+    tar -xf /opt/or1k-linux-musl-11.2.0.tar.xz
+    rm /opt/or1k-linux-musl-11.2.0.tar.xz
     cp /tmp/overlay/klipper/ar100.config /home/debian/klipper/.config
     cd /home/debian/klipper/
     export PATH=$PATH:/opt/output/bin
+	echo "export PATH=\$PATH:/opt/output/bin" >> /home/debian/.bashrc
     make olddefconfig
     make
     cp /home/debian/klipper/out/ar100.bin /opt/firmware
@@ -48,6 +51,7 @@ install_klipper(){
     make
     cp /home/debian/klipper/out/klipper.bin /opt/firmware/stm32.bin
     chown -R debian:debian /home/debian/klipper
+	systemctl enable flash-stm32.service
 }
 
 install_moonraker(){
@@ -101,9 +105,6 @@ install_ustreamer() {
 }
 
 install_autohotspot() {
-    # Disable unique naming scheme
-    ln -s /dev/null /etc/systemd/network/99-default.link
-
     # Install autohotspot script
     cp /tmp/overlay/autohotspot/autohotspot /usr/local/bin
     chmod +x /usr/local/bin/autohotspot
@@ -120,8 +121,17 @@ echo "🍰 Rebuild starting..."
 useradd debian -d /home/debian -G tty,dialout -m -s /bin/bash -e -1
 echo "debian ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/debian
 
+# Set default debian password
+echo debian:temppwd | chpasswd
+
 # Remove "dubious ownership" message when running git commands
 git config --global --add safe.directory '*'
+
+# Disable SSH root access
+sed -i 's/^PermitRootLogin.*$/#PermitRootLogin/g' /etc/ssh/sshd_config
+
+# Disable SSH. Can be enabled in Reflash
+systemctl disable ssh
 
 install_klipper
 install_moonraker
@@ -130,10 +140,9 @@ install_nginx
 install_klipperscreen
 install_ustreamer
 install_bins
-#install_autohotspot
+install_autohotspot
 
-# Add ttyGS0 to /etc/securetty
 echo "ttyGS0" >> /etc/securetty
 
-echo "rebuild-v0.0.1" > /etc/rebuild-version
+echo "rebuild-v0.0.2" > /etc/rebuild-version
 echo "🍰 Rebuild finished"
