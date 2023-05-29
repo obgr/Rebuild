@@ -9,7 +9,6 @@ env:
   TERM: xterm-256color
 
 jobs:
-  package:
   build:
     needs: package
     runs-on: self-hosted
