@@ -39,7 +39,7 @@ jobs:
 
     - name: Run build
       working-directory: ./build
-      run: ./compile.sh rebuild
+      run: DOCKER_EXTRA_ARGS="--cpus=4" ./compile.sh rebuild
 
     - name: Delete all old images
       run: rm -f *.img.xz
