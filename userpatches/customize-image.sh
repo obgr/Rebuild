@@ -121,8 +121,9 @@ echo "🍰 Rebuild starting..."
 useradd debian -d /home/debian -G tty,dialout -m -s /bin/bash -e -1
 echo "debian ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/debian
 
-# Set default debian password
+# Set default passwords
 echo debian:temppwd | chpasswd
+echo root:temppwd | chpasswd
 
 # Remove "dubious ownership" message when running git commands
 git config --global --add safe.directory '*'
@@ -144,5 +145,6 @@ install_autohotspot
 
 echo "ttyGS0" >> /etc/securetty
 
-echo "rebuild-v0.0.2" > /etc/rebuild-version
+cp /tmp/overlay/rebuild/rebuild-version /etc/
+
 echo "🍰 Rebuild finished"
