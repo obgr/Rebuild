@@ -13,8 +13,10 @@ function post_family_config__shrink_atf() {
 
     echo "🍰Compile without SCP binary"
     UBOOT_TARGET_MAP="SCP=/dev/null;;u-boot-sunxi-with-spl.bin"
-}
 
+	echo "🍰Do not apply all old patches"
+	BOOTPATCHDIR='v2023.04'
+}
 
 function format_partitions__make_boot_ro() {
     echo "🍰Making boot partition ro"
