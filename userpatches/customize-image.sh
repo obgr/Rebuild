@@ -44,11 +44,11 @@ install_klipper(){
     export PATH=$PATH:/opt/output/bin
 	echo "export PATH=\$PATH:/opt/output/bin" >> /home/debian/.bashrc
     make olddefconfig
-    make
+    make -j
     cp /home/debian/klipper/out/ar100.bin /opt/firmware
     cp /tmp/overlay/klipper/stm32f0.config /home/debian/klipper/.config
     make olddefconfig
-    make
+    make -j
     cp /home/debian/klipper/out/klipper.bin /opt/firmware/stm32.bin
     chown -R debian:debian /home/debian/klipper
 	systemctl enable flash-stm32.service

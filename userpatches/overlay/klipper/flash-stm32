@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e
+
+partprobe
+
+OUTFILE="/dev/"`lsblk -n -o NAME | grep 'mmcblk[0-2]$'`
+
+mkdir -p /mnt/config
+if ! grep -qs '/mnt/config ' /proc/mounts; then
+    mount -r ${OUTFILE}boot0p1 /mnt/config/
+fi
+
+CONFIG=`ls /mnt/config/*.json`
+REVISION=`cat "$CONFIG" | jq -r ".Revision" | tr '[:upper:]' '[:lower:]'`
+
+
+if [ "${REVISION}" == "a7" ]; then
+        FLASH_DEVICE=/dev/ttyS2
+else
+        FLASH_DEVICE=/dev/ttyS4
+fi
+
+STM32_BINARY=/opt/firmware/stm32.bin
+
+systemctl stop klipper
+
+gpioset 1 197=1
+gpioset 1 196=0
+gpioset 1 196=1
+stm32flash -w ${STM32_BINARY} -v -g 0 ${FLASH_DEVICE}
+gpioset 1 197=0
+gpioget 1 196
+
+systemctl disable flash-stm32
+systemctl start klipper
