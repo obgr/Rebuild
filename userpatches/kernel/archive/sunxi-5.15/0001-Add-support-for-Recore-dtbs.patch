@@ -595,5 +595,5 @@ index 000000000..89fcf8ccb
 +};
 +
 +&mali {
-+	assigned-clock-rates = <384000000>;
++	assigned-clock-rates = <297000000>;
 +};
