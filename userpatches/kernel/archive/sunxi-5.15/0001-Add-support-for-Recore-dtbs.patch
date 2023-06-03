@@ -182,7 +182,7 @@ new file mode 100644
 index 000000000..89fcf8ccb
 --- /dev/null
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-recore.dtsi
-@@ -0,0 +1,411 @@
+@@ -0,0 +1,414 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +
 +/dts-v1/;
@@ -552,7 +552,6 @@ index 000000000..89fcf8ccb
 +	status = "okay";
 +};
 +
-+
 +&usb_otg {
 +	dr_mode = "peripheral";
 +	vcc-supply = <&reg_dcdc1>;
@@ -593,4 +592,8 @@ index 000000000..89fcf8ccb
 +
 +&mbus{
 +    status="disabled";
++};
++
++&mali {
++	assigned-clock-rates = <384000000>;
 +};
