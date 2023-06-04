@@ -17,7 +17,7 @@ new file mode 100644
 index 000000000..1920172d3
 --- /dev/null
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-recore-a5.dts
-@@ -0,0 +1,71 @@
+@@ -0,0 +1,65 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +
 +/dts-v1/;
@@ -75,12 +75,6 @@ index 000000000..1920172d3
 +	regulator-min-microvolt = <700000>;
 +	regulator-max-microvolt = <700000>;
 +	regulator-name = "vcc-vref-e3";
-+};
-+
-+&uart3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart3_pins>;
-+	status = "okay";
 +};
 +
 +/* STM32 */
@@ -281,7 +275,7 @@ index 000000000..89fcf8ccb
 +	reg_usb1_vbus3: usb1-vbus3 {
 +		compatible = "regulator-fixed";
 +		regulator-name = "usb1-vbus3";
-+		gpio = <&pio 7 2 GPIO_ACTIVE_HIGH> ;
++		gpio = <&pio 7 2 GPIO_ACTIVE_HIGH> ; /* PH2 */
 +		regulator-min-microvolt = <5000000>;
 +		regulator-max-microvolt = <5000000>;
 +		regulator-always-on;

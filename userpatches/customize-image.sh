@@ -22,6 +22,8 @@ install_klipper(){
     git clone https://github.com/Klipper3d/klipper
     cp /tmp/overlay/klipper/install-recore.sh /home/debian/klipper/scripts/
     cp /tmp/overlay/klipper/recore.py /home/debian/klipper/klippy/extras/
+    cp /tmp/overlay/klipper/recore_a5.py /home/debian/klipper/klippy/extras/
+    cp /tmp/overlay/klipper/recore_adc_temperature.py /home/debian/klipper/klippy/extras/
     cp /tmp/overlay/klipper/thermocouple.py /home/debian/klipper/klippy/extras/
     cp /tmp/overlay/klipper/generic-recore-a5.cfg /home/debian/klipper/config/
     cp /tmp/overlay/klipper/generic-recore-a6.cfg /home/debian/klipper/config/
