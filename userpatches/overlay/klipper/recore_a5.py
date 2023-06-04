@@ -27,7 +27,7 @@ class recore_a5:
         printer = config.get_printer()
         ppins = printer.lookup_object('pins')
         ppins.register_chip('recore', self)
-        revisions = {'A3', 'A4', 'A5'}
+        revisions = {'A3': 'A3', 'A4':'A4', 'A5':'A5'}
         self.revision = config.getchoice('revision', revisions)
 
         pins["A3"] = pins["A4"] = pins["A5"]
