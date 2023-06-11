@@ -3,7 +3,6 @@ BOARD_NAME="Iagent Recore"
 BOARDFAMILY="sun50iw1"
 BOOTCONFIG="recore_defconfig"
 KERNEL_TARGET="legacy,current"
-FULL_DESKTOP="no"
 MODULES="g_serial"
 BOOT_LOGO="yes"
 
@@ -13,12 +12,14 @@ function post_family_config__shrink_atf() {
 
     echo "🍰Compile without SCP binary"
     UBOOT_TARGET_MAP="SCP=/dev/null;;u-boot-sunxi-with-spl.bin"
-
-	echo "🍰Do not apply all old patches"
-	BOOTPATCHDIR='v2023.04'
 }
 
 function format_partitions__make_boot_ro() {
     echo "🍰Making boot partition ro"
     sed -i 's:/boot ext4 defaults,commit=600,errors=remount-ro:/boot ext4 ro,defaults:' $SDCARD/etc/fstab
+}
+
+function extension_finish_config__enable_plymouth() {
+    echo "🍰Enable Plymouth on minimal build"
+    PLYMOUTH=yes
 }

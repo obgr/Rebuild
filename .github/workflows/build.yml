@@ -9,52 +9,36 @@ env:
   TERM: xterm-256color
 
 jobs:
-  build:
+  build-mainsail:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
-      with:
-        repository: 'armbian/build'
-        path: 'build'
-        ref: 'v23.05'
-        clean: false
-    - uses: actions/checkout@v3
-      with:
-        path: 'Rebuild'
-
-    - name: 'Copy files'
-      run: |
-        cp -r Rebuild/userpatches build
-        cp Rebuild/armbian/recore.csc build/config/boards/
-
-    - name: Make version number
-      run: echo "VERSION=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
-
-    - name: Use tag if tagged
-      if: startsWith(github.ref, 'refs/tags/')
-      run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-
-    - name: Create version file
-      run: echo "rebuild-${VERSION}" > build/userpatches/overlay/rebuild/rebuild-version
 
     - name: Run build
-      working-directory: ./build
-      run: DOCKER_EXTRA_ARGS="--cpus=12" ./compile.sh rebuild
-
-    - name: Delete all old images
-      run: rm -f *.img.xz
-
-    - name: Get filename of build
-      run: echo "IMG=`ls -1 build/output/images/ | grep "img.xz$"`" >> $GITHUB_ENV
-
-    - name: Move and rename file
-      run: cp build/output/images/${IMG} ./Rebuild-${VERSION}.img.xz
+      run: ./rebuild.sh mainsail
 
     - name: Release if tagged
       uses: ncipollo/release-action@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
         allowUpdates: true
-        artifacts: Rebuild-v*.img.xz
+        artifacts: Rebuild-mainsail-v*.img.xz
+        token: ${{ secrets.GITHUB_TOKEN }}
+        prerelease: true
+
+  build-barebone:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Run build
+      run: ./rebuild.sh barebone
+
+    - name: Release if tagged
+      uses: ncipollo/release-action@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        allowUpdates: true
+        artifacts: Rebuild-mainsail-v*.img.xz
         token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: true

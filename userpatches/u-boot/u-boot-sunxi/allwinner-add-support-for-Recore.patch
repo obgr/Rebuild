@@ -28,7 +28,7 @@ new file mode 100644
 index 0000000000..2d29fe1556
 --- /dev/null
 +++ b/arch/arm/dts/sun50i-a64-recore.dts
-@@ -0,0 +1,257 @@
+@@ -0,0 +1,271 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +// Copyright (c) 2016 ARM Ltd.
 +
@@ -67,57 +67,71 @@ index 0000000000..2d29fe1556
 +		};
 +	};
 +
-+  leds {
-+    compatible = "gpio-leds";
++	reg_usb1_vbus1: usb1-vbus1 {
++		compatible = "regulator-fixed";
++		regulator-name = "usb1-vbus1";
++		gpio = <&pio 7 0 GPIO_ACTIVE_HIGH>; /* PH0 */
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		regulator-always-on;
++		regulator-boot-on;
++		enable-active-high;
++	};
 +
-+    heartbeat-led {
-+      label = "recore:blue:heartbeat";
-+      gpios = <&pio 1 4 GPIO_ACTIVE_HIGH>;
-+      linux,default-trigger = "heartbeat";
-+    };
++	reg_usb1_vbus2: usb1-vbus2 {
++		compatible = "regulator-fixed";
++		regulator-name = "usb1-vbus2";
++		gpio = <&pio 7 1 GPIO_ACTIVE_HIGH>; /* PH1 */
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		regulator-always-on;
++		regulator-boot-on;
++		enable-active-high;
++	};
 +
-+    emmc-led {
-+      label = "recore:blue:emmc";
-+      gpios = <&pio 1 5 GPIO_ACTIVE_HIGH>;
-+      linux,default-trigger = "mmc0";
-+    };
++	reg_usb1_vbus3: usb1-vbus3 {
++		compatible = "regulator-fixed";
++		regulator-name = "usb1-vbus3";
++		gpio = <&pio 7 2 GPIO_ACTIVE_HIGH>; /* PH2 */
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		regulator-always-on;
++		regulator-boot-on;
++		enable-active-high;
++	};
 +
-+    cpu-led {
-+      label = "recore:blue:cpu";
-+      gpios = <&pio 1 6 GPIO_ACTIVE_HIGH>;
-+      linux,default-trigger = "cpu0";
-+    };
++	reg_usb1_vbus4: usb1-vbus4 {
++		compatible = "regulator-fixed";
++		regulator-name = "usb1-vbus4";
++		gpio = <&pio 7 3 GPIO_ACTIVE_HIGH>; /* PH3 */
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		regulator-always-on;
++		regulator-boot-on;
++		enable-active-high;
++	};
 +
-+    user-led {
-+      label = "recore:blue:user";
-+      gpios = <&pio 1 7 GPIO_ACTIVE_HIGH>;
-+      default-state = "on";
-+    };
-+  };
++	reg_usb1_vbus5: usb1-vbus5 {
++		compatible = "regulator-fixed";
++		regulator-name = "usb1-vbus5";
++		gpio = <&pio 3 5 GPIO_ACTIVE_HIGH>; /* PD5 */
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		regulator-always-on;
++		regulator-boot-on;
++		enable-active-high;
++	};
 +
-+  reg_usb1_vbus1: usb1-vbus1 {
-+          compatible = "regulator-fixed";
-+          regulator-name = "usb1-vbus1";
-+          gpio = <&pio 7 0 GPIO_ACTIVE_HIGH> ; /* PH0 */
-+          regulator-min-microvolt = <5000000>;
-+          regulator-max-microvolt = <5000000>;
-+          regulator-boot-on;
-+          regulator-always-on;
-+          enable-active-high;
-+          status = "okay";
-+  };
-+
-+  reg_usb1_vbus2: usb1-vbus2 {
-+          compatible = "regulator-fixed";
-+          regulator-name = "usb1-vbus2";
-+          gpio = <&pio 7 1 GPIO_ACTIVE_HIGH> ; /* PH1 */
-+          regulator-min-microvolt = <5000000>;
-+          regulator-max-microvolt = <5000000>;
-+          regulator-boot-on;
-+          regulator-always-on;
-+          enable-active-high;
-+          status = "okay";
-+  };
++	reg_usb1_vbus6: usb1-vbus6 {
++		compatible = "regulator-fixed";
++		regulator-name = "usb1-vbus6";
++		gpio = <&pio 3 6 GPIO_ACTIVE_HIGH> ; /* PD6 */
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		regulator-always-on;
++		regulator-boot-on;
++		enable-active-high;
++	};
 +};
 +
 +&de {
@@ -291,7 +305,7 @@ new file mode 100644
 index 0000000000..6ed99805ab
 --- /dev/null
 +++ b/configs/recore_defconfig
-@@ -0,0 +1,21 @@
+@@ -0,0 +1,32 @@
 +CONFIG_ARM=y
 +CONFIG_ARCH_SUNXI=y
 +CONFIG_SPL=y
@@ -301,8 +315,7 @@ index 0000000000..6ed99805ab
 +CONFIG_RESERVE_ALLWINNER_BOOT0_HEADER=y
 +CONFIG_DEFAULT_DEVICE_TREE="sun50i-a64-recore"
 +CONFIG_OF_LIST="sun50i-a64-recore"
-+CONFIG_USE_PREBOOT=y
-+CONFIG_PREBOOT="gpio set PH0; gpio set PH1;"
++CONFIG_DM_VIDEO=y
 +CONFIG_PHY_REALTEK=y
 +CONFIG_SUN8I_EMAC=y
 +CONFIG_USB_EHCI_HCD=y
@@ -313,5 +326,17 @@ index 0000000000..6ed99805ab
 +CONFIG_SYS_PBSIZE=1024
 +CONFIG_SYS_BOOTM_LEN=0x2000000
 +CONFIG_SUPPORT_EMMC_BOOT=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_SPLASH_SCREEN_ALIGN=y
++CONFIG_VIDEO_LOGO=y
++CONFIG_SPLASH_SCREEN=y
++CONFIG_BMP_16BPP=y
++CONFIG_BMP_24BPP=y
++CONFIG_BMP_32BPP=y
++CONFIG_VIDEO_BMP_RLE8=y
++CONFIG_DM_REGULATOR=y
++CONFIG_DM_REGULATOR_FIXED=y
++CONFIG_CMD_REGULATOR=y
 --
 2.30.2
