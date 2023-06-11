@@ -36,7 +36,7 @@ NAME="rebuild-${VERSION}-${TAG}"
 
 echo "${NAME}" > ${BUILD_DIR}/userpatches/overlay/rebuild/rebuild-version
 cd ${BUILD_DIR}
-DOCKER_EXTRA_ARGS="--cpus=20" ./compile.sh rebuild
+DOCKER_EXTRA_ARGS="--cpus=12" ./compile.sh rebuild
 IMG=`ls -1 output/images/ | grep "img.xz$"`
 echo "mv output/images/$IMG ../images/${NAME}.img.xz"
 mv "output/images/$IMG" "../images/${NAME}.img.xz"
