@@ -148,34 +148,44 @@ install_autohotspot() {
     systemctl enable autohotspot.service
 }
 
+
+prepare_build() {
+    # Ensure the debian user exists
+    useradd debian -d /home/debian -G tty,dialout -m -s /bin/bash -e -1
+    echo "debian ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/debian
+
+    # Set default passwords
+    echo debian:temppwd | chpasswd
+    echo root:temppwd | chpasswd
+
+    # Remove "dubious ownership" message when running git commands
+    git config --global --add safe.directory '*'
+
+    # Disable SSH root access
+    sed -i 's/^PermitRootLogin.*$/#PermitRootLogin/g' /etc/ssh/sshd_config
+
+    # Disable SSH. Can be enabled in Reflash
+    systemctl disable ssh
+
+    PACKAGE_LIST="avahi-daemon git iptables dnsmasq-base"
+    apt update
+    apt install -y $PACKAGE_LIST
+
+    echo "ttyGS0" >> /etc/securetty
+
+    cp /tmp/overlay/rebuild/rebuild-version /etc/
+    # Backwards compatibility with refactor
+    cp /etc/rebuild-version > /etc/refactor.version
+}
+
 echo "🍰 Rebuild starting..."
 
-# Ensure the debian user exists
-useradd debian -d /home/debian -G tty,dialout -m -s /bin/bash -e -1
-echo "debian ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/debian
-
-# Set default debian password
-echo debian:temppwd | chpasswd
-
-
-# Remove "dubious ownership" message when running git commands
-git config --global --add safe.directory '*'
-
-# Disable SSH root access
-sed -i 's/^PermitRootLogin.*$/#PermitRootLogin/g' /etc/ssh/sshd_config
-
-# Disable SSH. Can be enabled in Reflash
-systemctl disable ssh
-
+prepare_build
 install_klipper
 install_octoprint
 install_ustreamer
 install_bins
 install_autohotspot
-
-echo "ttyGS0" >> /etc/securetty
-
-echo "rebuild-octoprint-v0.0.1" > /etc/rebuild-version
 
 # Backwards compatibility with refactor
 echo "rebuild-octoprint-v0.0.1" > /etc/refactor.version
