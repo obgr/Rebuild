@@ -74,14 +74,13 @@ install_octoprint(){
 	python -m venv OctoPrint
 	pip install --upgrade pip wheel
 	pip install octoprint
-	wget https://github.com/OctoPrint/OctoPrint/raw/master/scripts/octoprint.service
-	sed -i 's/pi/debian/g' octoprint.service
-	mv octoprint.service /etc/systemd/system/octoprint.service
+	cp /tmp/overlay/octoprint/octoprint.service /etc/systemd/system/octoprint.service
 	chown -R debian:debian OctoPrint
 	systemctl enable octoprint
+	cp /tmp/overlay/octoprint/config.yaml /home/debian/.octoprint/
 
 	# nftables
-	cp /tmp/overlay/nftables.conf /etc/
+	cp /tmp/overlay/octoprint/nftables.conf /etc/
 	systemctl enable nftables
 	echo "octoprint 5000/tcp" >> /etc/services
 
@@ -100,12 +99,6 @@ install_octoprint(){
 	git clone https://github.com/intelligent-agent/octoprint_refactor.git
 	cd octoprint_refactor/
 	/home/debian/OctoPrint/venv/bin/python setup.py install
-
-	cat <<EOF > /usr/local/bin/get-rootfs
-#!/bin/bash
-echo "emmc"
-EOF
-	chmod +x /usr/local/bin/get-rootfs
 }
 
 install_octodash() {
