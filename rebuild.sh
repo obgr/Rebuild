@@ -15,7 +15,7 @@ case $VERSION in
     ;; 
 esac
 
-if [ $LOCAL == "local" ]; then
+if [ "x$LOCAL" == "xlocal" ]; then
     BUILD_PREFIX="."
 else
     BUILD_PREFIX=".."
@@ -27,23 +27,26 @@ if ! test -d $BUILD_DIR ; then
     git clone https://github.com/armbian/build $BUILD_DIR
 fi
 
-cd $BUILD_DIR
-git checkout v23.05.2
-git pull
-cd ..
-rm -rf ${BUILD_DIR}/userpatches
-cp -r userpatches build-${VERSION}
-cp armbian/customize-image-${VERSION}.sh ${BUILD_DIR}/userpatches/customize-image.sh
-cp armbian/recore.csc ${BUILD_DIR}/config/boards
-cp armbian/watermark.png ${BUILD_DIR}/packages/plymouth-theme-armbian
-
+ROOT_DIR=`pwd`
 TAG=`git describe`
 NAME="rebuild-${VERSION}-${TAG}"
 
+cd $BUILD_DIR
+git checkout v23.05.2
+git pull
+rm -rf "userpatches"
+
+cd $ROOT_DIR
+cp -r "userpatches" "${BUILD_DIR}"
+cp armbian/customize-image-${VERSION}.sh ${BUILD_DIR}/userpatches/customize-image.sh
+cp armbian/recore.csc ${BUILD_DIR}/config/boards
+cp armbian/watermark.png ${BUILD_DIR}/packages/plymouth-theme-armbian
 echo "${NAME}" > ${BUILD_DIR}/userpatches/overlay/rebuild/rebuild-version
-cd ${BUILD_DIR}
+
+cd $BUILD_DIR
 DOCKER_EXTRA_ARGS="--cpus=12" ./compile.sh rebuild
 IMG=`ls -1 output/images/ | grep "img.xz$"`
 
-mv "output/images/$IMG" "${BUILD_PREFIX}/../images/${NAME}.img.xz"
+cd $ROOT_DIR
+mv $BUILD_DIR/output/images/$IMG "${BUILD_PREFIX}/images/${NAME}.img.xz"
 echo "🍰 Finished building ${NAME}"
