@@ -9,6 +9,25 @@ env:
   TERM: xterm-256color
 
 jobs:
+  build-barebone:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        clean: false
+
+    - name: Run build
+      run: ./rebuild.sh barebone
+
+    - name: Release if tagged
+      uses: ncipollo/release-action@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        allowUpdates: true
+        artifacts: Rebuild-barebone-v*.img.xz
+        token: ${{ secrets.GITHUB_TOKEN }}
+        prerelease: true
+
   build-mainsail:
     runs-on: self-hosted
     steps:
@@ -28,19 +47,40 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: true
 
-  build-barebone:
+  build-octoprint:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
+      with:
+        clean: false
 
     - name: Run build
-      run: ./rebuild.sh barebone
+      run: ./rebuild.sh octoprint
 
     - name: Release if tagged
       uses: ncipollo/release-action@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
         allowUpdates: true
-        artifacts: Rebuild-mainsail-v*.img.xz
+        artifacts: Rebuild-octoprint-v*.img.xz
+        token: ${{ secrets.GITHUB_TOKEN }}
+        prerelease: true
+
+  build-fluidd:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        clean: false
+
+    - name: Run build
+      run: ./rebuild.sh fluidd
+
+    - name: Release if tagged
+      uses: ncipollo/release-action@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        allowUpdates: true
+        artifacts: Rebuild-fluidd-v*.img.xz
         token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: true
