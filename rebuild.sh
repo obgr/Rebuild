@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 
 VERSION=$1
 LOCAL=$2
@@ -28,7 +29,7 @@ if ! test -d $BUILD_DIR ; then
 fi
 
 ROOT_DIR=`pwd`
-TAG=`git describe`
+TAG=`git describe --always`
 NAME="rebuild-${VERSION}-${TAG}"
 
 cd $BUILD_DIR
