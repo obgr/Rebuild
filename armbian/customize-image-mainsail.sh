@@ -122,32 +122,37 @@ install_autohotspot() {
     systemctl enable autohotspot.service
 }
 
+prepare_build() {
+    # Ensure the debian user exists
+    useradd debian -d /home/debian -G tty,dialout -m -s /bin/bash -e -1
+    echo "debian ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/debian
+
+    # Set default passwords
+    echo debian:temppwd | chpasswd
+    echo root:temppwd | chpasswd
+
+    # Remove "dubious ownership" message when running git commands
+    git config --global --add safe.directory '*'
+
+    # Disable SSH root access
+    sed -i 's/^PermitRootLogin.*$/#PermitRootLogin/g' /etc/ssh/sshd_config
+
+    # Disable SSH. Can be enabled in Reflash
+    systemctl disable ssh
+
+    PACKAGE_LIST="avahi-daemon nginx git unzip iptables dnsmasq-base"
+    PACKAGE_LIST+=" python3-virtualenv virtualenv python3-dev libffi-dev build-essential python3-cffi python3-libxml2"
+    PACKAGE_LIST+=" libncurses-dev libusb-dev stm32flash libnewlib-arm-none-eabi gcc-arm-none-eabi binutils-arm-none-eabi "
+    apt update
+    apt install -y $PACKAGE_LIST
+
+    echo "ttyGS0" >> /etc/securetty
+
+    cp /tmp/overlay/rebuild/rebuild-version /etc/
+}
+
 echo "🍰 Rebuild starting..."
-
-# Ensure the debian user exists
-useradd debian -d /home/debian -G tty,dialout -m -s /bin/bash -e -1
-echo "debian ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/debian
-
-# Set default passwords
-echo debian:temppwd | chpasswd
-echo root:temppwd | chpasswd
-
-# Remove "dubious ownership" message when running git commands
-git config --global --add safe.directory '*'
-
-# Disable SSH root access
-sed -i 's/^PermitRootLogin.*$/#PermitRootLogin/g' /etc/ssh/sshd_config
-
-# Disable SSH. Can be enabled in Reflash
-systemctl disable ssh
-
-
-PACKAGE_LIST="avahi-daemon nginx git unzip iptables dnsmasq-base"
-PACKAGE_LIST+=" python3-virtualenv virtualenv python3-dev libffi-dev build-essential python3-cffi python3-libxml2"
-PACKAGE_LIST+=" libncurses-dev libusb-dev stm32flash libnewlib-arm-none-eabi gcc-arm-none-eabi binutils-arm-none-eabi "
-apt update
-apt install -y $PACKAGE_LIST
-
+prepare_build
 install_klipper
 install_moonraker
 install_mainsail
@@ -156,9 +161,4 @@ install_klipperscreen
 install_ustreamer
 install_bins
 install_autohotspot
-
-echo "ttyGS0" >> /etc/securetty
-
-cp /tmp/overlay/rebuild/rebuild-version /etc/
-
 echo "🍰 Rebuild finished"

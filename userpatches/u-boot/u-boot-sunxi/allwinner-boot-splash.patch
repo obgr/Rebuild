@@ -82,7 +82,7 @@ index 958b850d..c4f34dbf 100644
  #ifdef CONFIG_USB_KEYBOARD
 +#if defined CONFIG_VIDEO || defined CONFIG_DM_VIDEO
 +#define CONSOLE_STDIN_SETTINGS \
-+	"preboot=regulator status;\0" \
++	"preboot=regulator status\0" \
 +	"stdin=serial\0"
 +#else
  #define CONSOLE_STDIN_SETTINGS \

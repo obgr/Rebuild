@@ -78,6 +78,7 @@ install_octoprint(){
 	chown -R debian:debian OctoPrint
 	systemctl enable octoprint
 	cp /tmp/overlay/octoprint/config.yaml /home/debian/.octoprint/
+    chown -R debian:debian /home/debian/.octoprint/config.yaml
 
 	# nftables
 	cp /tmp/overlay/octoprint/nftables.conf /etc/
@@ -179,8 +180,5 @@ install_octoprint
 install_ustreamer
 install_bins
 install_autohotspot
-
-# Backwards compatibility with refactor
-echo "rebuild-octoprint-v0.0.1" > /etc/refactor.version
 
 echo "🍰 Rebuild finished"

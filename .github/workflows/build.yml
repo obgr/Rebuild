@@ -76,3 +76,20 @@ jobs:
         artifacts: Rebuild-fluidd-v*.img.xz
         token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: true
+
+  build-reflash:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Run build
+      run: ./rebuild.sh reflash
+
+    - name: Release if tagged
+      uses: ncipollo/release-action@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        allowUpdates: true
+        artifacts: Rebuild-reflash-v*.img.xz
+        token: ${{ secrets.GITHUB_TOKEN }}
+        prerelease: true

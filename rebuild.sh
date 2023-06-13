@@ -6,12 +6,12 @@ VERSION=$1
 LOCAL=$2
 
 case $VERSION in
-    barebone|mainsail|fluidd|octoprint)
+    barebone|mainsail|fluidd|octoprint|reflash)
         echo "Building $VERSION"
         ;;
     *)
         echo "Wrong argument '$1'"
-        echo "Usage: $0 <barebone|mainsail|fluidd|octoprint>"
+        echo "Usage: $0 <barebone|mainsail|fluidd|octoprint|reflash>"
         exit 1
     ;; 
 esac
@@ -41,7 +41,13 @@ cd $ROOT_DIR
 cp -r "userpatches" "${BUILD_DIR}"
 cp armbian/customize-image-${VERSION}.sh ${BUILD_DIR}/userpatches/customize-image.sh
 cp armbian/recore.csc ${BUILD_DIR}/config/boards
-cp armbian/watermark.png ${BUILD_DIR}/packages/plymouth-theme-armbian
+
+if [ "x$VERSION" == "xreflash" ]; then
+    cp armbian/watermark-reflash.png ${BUILD_DIR}/packages/plymouth-theme-armbian/watermark.png
+else
+    cp armbian/watermark.png ${BUILD_DIR}/packages/plymouth-theme-armbian/watermark.png
+fi
+
 echo "${NAME}" > ${BUILD_DIR}/userpatches/overlay/rebuild/rebuild-version
 
 cd $BUILD_DIR
