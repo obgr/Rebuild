@@ -62,7 +62,7 @@ install_klipper(){
 	systemctl enable flash-stm32.service
 
 	mkdir -p  /home/debian/printer_data/config/
-	chown -R debian:debian printer_data
+	chown -R debian:debian /home/debian/printer_data/
 }
 
 install_octoprint(){
