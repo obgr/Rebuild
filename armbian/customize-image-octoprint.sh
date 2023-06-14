@@ -170,7 +170,7 @@ prepare_build() {
 
     cp /tmp/overlay/rebuild/rebuild-version /etc/
     # Backwards compatibility with refactor
-    cp /etc/rebuild-version > /etc/refactor.version
+    cp /tmp/overlay/rebuild/rebuild-version /etc/refactor.version
 }
 
 post_build() {
