@@ -17,6 +17,7 @@ LINUXFAMILY=$2
 BOARD=$3
 BUILD_DESKTOP=$4
 
+
 install_klipper(){
     cd /home/debian
     git clone https://github.com/Klipper3d/klipper
@@ -145,6 +146,9 @@ install_autohotspot() {
 
 
 prepare_build() {
+    apt update
+    apt install -y avahi-daemon git iptables dnsmasq-base
+
     # Ensure the debian user exists
     useradd debian -d /home/debian -G tty,dialout -m -s /bin/bash -e -1
     echo "debian ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/debian
@@ -152,6 +156,9 @@ prepare_build() {
     # Set default passwords
     echo debian:temppwd | chpasswd
     echo root:temppwd | chpasswd
+
+    # Force debian to change password
+    chage -d 0 debian
 
     # Remove "dubious ownership" message when running git commands
     git config --global --add safe.directory '*'
@@ -162,16 +169,14 @@ prepare_build() {
     # Disable SSH. Can be enabled in Reflash
     systemctl disable ssh
 
-    PACKAGE_LIST="avahi-daemon git iptables dnsmasq-base"
-    apt update
-    apt install -y $PACKAGE_LIST
-
     echo "ttyGS0" >> /etc/securetty
 
     cp /tmp/overlay/rebuild/rebuild-version /etc/
     # Backwards compatibility with refactor
     cp /etc/rebuild-version > /etc/refactor.version
 }
+
+set -e
 
 echo "🍰 Rebuild starting..."
 

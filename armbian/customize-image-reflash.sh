@@ -12,8 +12,6 @@
 # userpatches/overlay directory on host is bind-mounted to /tmp/overlay in chroot
 # The sd card's root path is accessible via $SDCARD variable.
 
-set -e
-
 RELEASE=$1
 LINUXFAMILY=$2
 BOARD=$3
@@ -51,6 +49,8 @@ install_autohotspot() {
 
     systemctl enable autohotspot.service
 }
+
+set -e
 
 echo "🍰 Reflash starting..."
 prepare_install

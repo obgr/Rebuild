@@ -123,6 +123,12 @@ install_autohotspot() {
 }
 
 prepare_build() {
+    PACKAGE_LIST="avahi-daemon nginx git unzip iptables dnsmasq-base"
+    PACKAGE_LIST+=" python3-virtualenv virtualenv python3-dev libffi-dev build-essential python3-cffi python3-libxml2"
+    PACKAGE_LIST+=" libncurses-dev libusb-dev stm32flash libnewlib-arm-none-eabi gcc-arm-none-eabi binutils-arm-none-eabi "
+    apt update
+    apt install -y $PACKAGE_LIST
+
     # Ensure the debian user exists
     useradd debian -d /home/debian -G tty,dialout -m -s /bin/bash -e -1
     echo "debian ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/debian
@@ -130,6 +136,9 @@ prepare_build() {
     # Set default passwords
     echo debian:temppwd | chpasswd
     echo root:temppwd | chpasswd
+
+    # Force debian to change password
+    chage -d 0 debian
 
     # Remove "dubious ownership" message when running git commands
     git config --global --add safe.directory '*'
@@ -140,18 +149,14 @@ prepare_build() {
     # Disable SSH. Can be enabled in Reflash
     systemctl disable ssh
 
-    PACKAGE_LIST="avahi-daemon nginx git unzip iptables dnsmasq-base"
-    PACKAGE_LIST+=" python3-virtualenv virtualenv python3-dev libffi-dev build-essential python3-cffi python3-libxml2"
-    PACKAGE_LIST+=" libncurses-dev libusb-dev stm32flash libnewlib-arm-none-eabi gcc-arm-none-eabi binutils-arm-none-eabi "
-    apt update
-    apt install -y $PACKAGE_LIST
-
     echo "ttyGS0" >> /etc/securetty
 
     cp /tmp/overlay/rebuild/rebuild-version /etc/
 }
 
 echo "🍰 Rebuild starting..."
+
+set -e
 
 prepare_build
 install_klipper
