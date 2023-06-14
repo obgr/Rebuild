@@ -77,8 +77,9 @@ install_octoprint(){
 	cp /tmp/overlay/octoprint/octoprint.service /etc/systemd/system/octoprint.service
 	chown -R debian:debian OctoPrint
 	systemctl enable octoprint
+    mkdir -p /home/debian/.octoprint
 	cp /tmp/overlay/octoprint/config.yaml /home/debian/.octoprint/
-    chown -R debian:debian /home/debian/.octoprint/config.yaml
+    chown -R debian:debian /home/debian/.octoprint/
 
 	# nftables
 	cp /tmp/overlay/octoprint/nftables.conf /etc/
