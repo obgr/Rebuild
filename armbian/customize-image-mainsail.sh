@@ -18,6 +18,7 @@ BOARD=$3
 BUILD_DESKTOP=$4
 
 install_klipper(){
+    echo "🍰 install Klipper"
     cd /home/debian
     git clone https://github.com/Klipper3d/klipper
     cp /tmp/overlay/klipper/install-recore.sh /home/debian/klipper/scripts/
@@ -62,6 +63,7 @@ install_klipper(){
 }
 
 install_moonraker(){
+    echo "🍰 install Moonraker"
     cd /home/debian
     git clone https://github.com/Arksine/moonraker
     chown -R debian:debian moonraker
@@ -72,6 +74,7 @@ install_moonraker(){
 }
 
 install_mainsail(){
+    echo "🍰 install Mainsail"
     cd /home/debian
     wget https://github.com/intelligent-agent/mainsail/releases/latest/download/mainsail.zip
     unzip mainsail.zip -d mainsail
@@ -80,6 +83,7 @@ install_mainsail(){
 }
 
 install_nginx(){
+    echo "🍰 install Nginx"
     cp /tmp/overlay/nginx/upstreams.conf /etc/nginx/conf.d/
     cp /tmp/overlay/nginx/common_vars.conf /etc/nginx/conf.d/
     cp /tmp/overlay/nginx/mainsail /etc/nginx/sites-available
@@ -88,11 +92,13 @@ install_nginx(){
 }
 
 install_bins(){
+    echo "🍰 install Bins"
     cp /tmp/overlay/bins/* /usr/local/bin
     chmod +x /usr/local/bin/*
 }
 
 install_klipperscreen() {
+    echo "🍰 install KlipperScreen"
     cd /home/debian
     git clone https://github.com/jordanruthe/KlipperScreen.git
     chown -R debian:debian KlipperScreen
@@ -100,6 +106,7 @@ install_klipperscreen() {
 }
 
 install_ustreamer() {
+    echo "🍰 install Ustreamer"
     cd /home/debian
     apt install -y build-essential libevent-dev libjpeg-dev libbsd-dev
     git clone https://github.com/pikvm/ustreamer
@@ -112,6 +119,7 @@ install_ustreamer() {
 }
 
 install_autohotspot() {
+    echo "🍰 install Autohotspot"
     # Install autohotspot script
     cp /tmp/overlay/autohotspot/autohotspot /usr/local/bin
     chmod +x /usr/local/bin/autohotspot
@@ -123,6 +131,7 @@ install_autohotspot() {
 }
 
 prepare_build() {
+    echo "🍰 Prepare build"
     PACKAGE_LIST="avahi-daemon nginx git unzip iptables dnsmasq-base"
     PACKAGE_LIST+=" python3-virtualenv virtualenv python3-dev libffi-dev build-essential python3-cffi python3-libxml2"
     PACKAGE_LIST+=" libncurses-dev libusb-dev stm32flash libnewlib-arm-none-eabi gcc-arm-none-eabi binutils-arm-none-eabi "
@@ -136,9 +145,6 @@ prepare_build() {
     # Set default passwords
     echo debian:temppwd | chpasswd
     echo root:temppwd | chpasswd
-
-    # Force debian to change password
-    chage -d 0 debian
 
     # Remove "dubious ownership" message when running git commands
     git config --global --add safe.directory '*'
@@ -154,6 +160,12 @@ prepare_build() {
     cp /tmp/overlay/rebuild/rebuild-version /etc/
 }
 
+post_build() {
+    echo "🍰 Post build"
+    # Force debian to change password
+    chage -d 0 debian
+}
+
 set -e
 echo "🍰 Rebuild starting..."
 prepare_build
@@ -165,4 +177,6 @@ install_klipperscreen
 install_ustreamer
 install_bins
 install_autohotspot
+post_build
+
 echo "🍰 Rebuild finished"

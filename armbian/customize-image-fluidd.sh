@@ -137,9 +137,6 @@ prepare_build() {
     echo debian:temppwd | chpasswd
     echo root:temppwd | chpasswd
 
-    # Force debian to change password
-    chage -d 0 debian
-
     # Remove "dubious ownership" message when running git commands
     git config --global --add safe.directory '*'
 
@@ -154,6 +151,10 @@ prepare_build() {
     cp /tmp/overlay/rebuild/rebuild-version /etc/
 }
 
+post_build() {
+    # Force debian to change password
+    chage -d 0 debian
+}
 echo "🍰 Rebuild starting..."
 
 set -e
@@ -167,5 +168,6 @@ install_klipperscreen
 install_ustreamer
 install_bins
 install_autohotspot
+post_build
 
 echo "🍰 Rebuild finished"
