@@ -41,6 +41,7 @@ cd $ROOT_DIR
 cp -r "userpatches" "${BUILD_DIR}"
 cp armbian/customize-image-${VERSION}.sh ${BUILD_DIR}/userpatches/customize-image.sh
 cp armbian/recore.csc ${BUILD_DIR}/config/boards
+rm -f "${BUILD_DIR}/patch/u-boot/u-boot-sunxi/allwinner-boot-splash.patch"
 
 if [ "x$VERSION" == "xreflash" ]; then
     cp armbian/watermark-reflash.png ${BUILD_DIR}/packages/plymouth-theme-armbian/watermark.png
