@@ -607,6 +607,6 @@ index 000000000..89fcf8ccb
 +    status="disabled";
 +};
 +
-+/*&mali {
++&mali {
 +	assigned-clock-rates = <297000000>;
-+};*/
++};
