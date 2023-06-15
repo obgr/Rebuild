@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Remove old images
-      run: rm ../images/Rebuild-barebone-*.img.xz
+      run: rm -f ../images/Rebuild-barebone-*.img.xz
 
     - name: Run build
       run: ./rebuild.sh barebone
@@ -35,7 +35,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Remove old images
-      run: rm ../images/Rebuild-mainsail-*.img.xz
+      run: rm -f ../images/Rebuild-mainsail-*.img.xz
 
     - name: Run build
       run: ./rebuild.sh mainsail
@@ -55,7 +55,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Remove old images
-      run: rm ../images/Rebuild-octoprint-*.img.xz
+      run: rm -f ../images/Rebuild-octoprint-*.img.xz
 
     - name: Run build
       run: ./rebuild.sh octoprint
@@ -75,7 +75,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Remove old images
-      run: rm ../images/Rebuild-fluidd-*.img.xz
+      run: rm -f ../images/Rebuild-fluidd-*.img.xz
 
     - name: Run build
       run: ./rebuild.sh fluidd
@@ -95,7 +95,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Remove old images
-      run: rm ../images/Rebuild-reflash-*.img.xz
+      run: rm -f ../images/Rebuild-reflash-*.img.xz
 
     - name: Run build
       run: ./rebuild.sh reflash
