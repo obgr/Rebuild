@@ -14,6 +14,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Remove old images
+      run: rm ../images/Rebuild-barebone-*.img.xz
+
     - name: Run build
       run: ./rebuild.sh barebone
 
@@ -22,7 +25,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         allowUpdates: true
-        artifacts: Rebuild-barebone-v*.img.xz
+        artifacts: ../images/Rebuild-barebone-v*.img.xz
         token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: true
 
@@ -30,6 +33,9 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
+
+    - name: Remove old images
+      run: rm ../images/Rebuild-mainsail-*.img.xz
 
     - name: Run build
       run: ./rebuild.sh mainsail
@@ -39,7 +45,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         allowUpdates: true
-        artifacts: Rebuild-mainsail-v*.img.xz
+        artifacts: ../images/Rebuild-mainsail-v*.img.xz
         token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: true
 
@@ -47,6 +53,9 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
+
+    - name: Remove old images
+      run: rm ../images/Rebuild-octoprint-*.img.xz
 
     - name: Run build
       run: ./rebuild.sh octoprint
@@ -56,7 +65,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         allowUpdates: true
-        artifacts: Rebuild-octoprint-v*.img.xz
+        artifacts: ../images/Rebuild-octoprint-v*.img.xz
         token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: true
 
@@ -64,6 +73,9 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
+
+    - name: Remove old images
+      run: rm ../images/Rebuild-fluidd-*.img.xz
 
     - name: Run build
       run: ./rebuild.sh fluidd
@@ -73,7 +85,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         allowUpdates: true
-        artifacts: Rebuild-fluidd-v*.img.xz
+        artifacts: ../images/Rebuild-fluidd-v*.img.xz
         token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: true
 
@@ -81,6 +93,9 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
+
+    - name: Remove old images
+      run: rm ../images/Rebuild-reflash-*.img.xz
 
     - name: Run build
       run: ./rebuild.sh reflash
@@ -90,6 +105,6 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         allowUpdates: true
-        artifacts: Rebuild-reflash-v*.img.xz
+        artifacts: ../images/Rebuild-reflash-v*.img.xz
         token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: true

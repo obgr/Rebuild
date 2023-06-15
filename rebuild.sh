@@ -55,5 +55,5 @@ DOCKER_EXTRA_ARGS="--cpus=12" ./compile.sh rebuild
 IMG=`ls -1 output/images/ | grep "img.xz$"`
 
 cd $ROOT_DIR
-mv $BUILD_DIR/output/images/$IMG "${ROOT_DIR}/${NAME}.img.xz"
+mv $BUILD_DIR/output/images/$IMG "${BUILD_PREFIX}/images/${NAME}.img.xz"
 echo "🍰 Finished building ${NAME}"
