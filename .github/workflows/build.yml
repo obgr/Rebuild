@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Remove old images
-      run: rm -f ../images/Rebuild-barebone-*.img.xz
+      run: rm -f ../images/rebuild-barebone-*.img.xz
 
     - name: Run build
       run: ./rebuild.sh barebone
@@ -25,7 +25,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         allowUpdates: true
-        artifacts: ../images/Rebuild-barebone-v*.img.xz
+        artifacts: ../images/rebuild-barebone-v*.img.xz
         token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: true
 
@@ -35,7 +35,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Remove old images
-      run: rm -f ../images/Rebuild-mainsail-*.img.xz
+      run: rm -f ../images/rebuild-mainsail-*.img.xz
 
     - name: Run build
       run: ./rebuild.sh mainsail
@@ -45,7 +45,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         allowUpdates: true
-        artifacts: ../images/Rebuild-mainsail-v*.img.xz
+        artifacts: ../images/rebuild-mainsail-v*.img.xz
         token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: true
 
@@ -55,7 +55,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Remove old images
-      run: rm -f ../images/Rebuild-octoprint-*.img.xz
+      run: rm -f ../images/rebuild-octoprint-*.img.xz
 
     - name: Run build
       run: ./rebuild.sh octoprint
@@ -65,7 +65,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         allowUpdates: true
-        artifacts: ../images/Rebuild-octoprint-v*.img.xz
+        artifacts: ../images/rebuild-octoprint-v*.img.xz
         token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: true
 
@@ -75,7 +75,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Remove old images
-      run: rm -f ../images/Rebuild-fluidd-*.img.xz
+      run: rm -f ../images/rebuild-fluidd-*.img.xz
 
     - name: Run build
       run: ./rebuild.sh fluidd
@@ -85,7 +85,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         allowUpdates: true
-        artifacts: ../images/Rebuild-fluidd-v*.img.xz
+        artifacts: ../images/rebuild-fluidd-v*.img.xz
         token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: true
 
@@ -95,7 +95,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Remove old images
-      run: rm -f ../images/Rebuild-reflash-*.img.xz
+      run: rm -f ../images/rebuild-reflash-*.img.xz
 
     - name: Run build
       run: ./rebuild.sh reflash
@@ -105,6 +105,6 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         allowUpdates: true
-        artifacts: ../images/Rebuild-reflash-v*.img.xz
+        artifacts: ../images/rebuild-reflash-v*.img.xz
         token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: true
