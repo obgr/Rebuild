@@ -127,7 +127,7 @@ prepare_build() {
     PACKAGE_LIST+=" python3-virtualenv virtualenv python3-dev libffi-dev build-essential python3-cffi python3-libxml2"
     PACKAGE_LIST+=" libncurses-dev libusb-dev stm32flash libnewlib-arm-none-eabi gcc-arm-none-eabi binutils-arm-none-eabi "
     apt update
-    apt install -y $PACKAGE_LIST
+    apt install -y "$PACKAGE_LIST"
 
     # Ensure the debian user exists
     useradd debian -d /home/debian -G tty,dialout -m -s /bin/bash -e -1
