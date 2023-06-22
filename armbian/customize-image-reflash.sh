@@ -32,7 +32,7 @@ prepare_install(){
 
 install_reflash() {
     cd /usr/src
-    wget https://github.com/intelligent-agent/Reflash/releases/download/v0.1.2-RC1/reflash.tar.gz
+    wget https://github.com/intelligent-agent/Reflash/releases/download/v0.1.2-RC2/reflash.tar.gz
     tar -xf reflash.tar.gz
     cd reflash
     chmod +x ./scripts/install_reflash.sh

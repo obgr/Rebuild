@@ -3,7 +3,6 @@
 set -e
 
 VERSION=$1
-LOCAL=$2
 
 case $VERSION in
     barebone|mainsail|fluidd|octoprint|reflash)
@@ -16,13 +15,7 @@ case $VERSION in
     ;; 
 esac
 
-if [ "x$LOCAL" == "xlocal" ]; then
-    BUILD_PREFIX="."
-else
-    BUILD_PREFIX=".."
-fi
-
-BUILD_DIR="${BUILD_PREFIX}/build-${VERSION}"
+BUILD_DIR="../build-${VERSION}"
 if ! test -d $BUILD_DIR ; then
     echo "$BUILD_DIR missing"
     git clone https://github.com/armbian/build $BUILD_DIR
@@ -33,7 +26,8 @@ TAG=`git describe --always --tags`
 NAME="rebuild-${VERSION}-${TAG}"
 
 cd $BUILD_DIR
-git checkout v23.05.2
+git reset --hard
+git checkout v.23.05.2
 git pull
 rm -rf "userpatches"
 
@@ -56,5 +50,5 @@ DOCKER_EXTRA_ARGS="--cpus=12" ./compile.sh rebuild
 IMG=`ls -1 output/images/ | grep "img.xz$"`
 
 cd $ROOT_DIR
-mv $BUILD_DIR/output/images/$IMG "${BUILD_PREFIX}/images/${NAME}.img.xz"
+mv $BUILD_DIR/output/images/$IMG "../images/${NAME}.img.xz"
 echo "🍰 Finished building ${NAME}"

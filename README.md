@@ -4,13 +4,11 @@ Rebuild is a complete linux image for running on Recore 3D printer control board
 Rebuild is based on Armbians Build system and is a thin layer of scripts to crate different 
 Armbian images for Recore. 
 * Rebuild-barebone - No top level applications installed, just a plain Armbian. 
-    - Debian user not forced password reset
 * Rebuild-Mainsail - Comes with Klipper, Moonraker and Mainsail
 * Rebuild-Fluidd - Comes with Klipper, Moonraker and Fluidd
-    - Getting a "timer too close" error
 * Rebuild-OctoPrint - Comes with Klipper and OctoPrint
     - No embeded screen program
-* Reflash - A flasher application for choosing one of the above. 
+* Reflash - A flasher application for choosing one of the above.
 
 To build a barebone version:
 `./rebuild barebone`
