@@ -6,7 +6,7 @@ VERSION=$1
 
 case $VERSION in
     barebone|mainsail|fluidd|octoprint|reflash)
-        echo "Building $VERSION"
+        echo "🍰 Building $VERSION"
         ;;
     *)
         echo "Wrong argument '$1'"
@@ -27,7 +27,7 @@ NAME="rebuild-${VERSION}-${TAG}"
 
 cd $BUILD_DIR
 git reset --hard
-git checkout v.23.05.2
+git checkout v23.05.2
 git pull
 rm -rf "userpatches"
 
