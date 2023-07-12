@@ -247,7 +247,7 @@ index 000000000..89fcf8ccb
 +		emmc-led {
 +			label = "recore:white:emmc";
 +			gpios = <&pio 1 5 GPIO_ACTIVE_HIGH>;
-+			linux,default-trigger = "mmc0";
++			linux,default-trigger = "mmc2";
 +		};
 +
 +		cpu-led {
