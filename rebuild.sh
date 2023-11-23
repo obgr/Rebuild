@@ -27,8 +27,8 @@ NAME="rebuild-${VERSION}-${TAG}"
 
 cd $BUILD_DIR
 git reset --hard
-git checkout v23.05.2
 git pull
+git checkout v23.08
 rm -rf "userpatches"
 
 cd "$ROOT_DIR"
@@ -37,11 +37,7 @@ cp armbian/customize-image-"${VERSION}".sh "${BUILD_DIR}"/userpatches/customize-
 cp armbian/recore.csc "${BUILD_DIR}"/config/boards
 rm -f "${BUILD_DIR}/patch/u-boot/u-boot-sunxi/allwinner-boot-splash.patch"
 
-if [ "$VERSION" == "reflash" ]; then
-    cp armbian/watermark-reflash.png "${BUILD_DIR}"/packages/plymouth-theme-armbian/watermark.png
-else
-    cp armbian/watermark.png "${BUILD_DIR}"/packages/plymouth-theme-armbian/watermark.png
-fi
+cp armbian/watermark.png "${BUILD_DIR}"/packages/plymouth-theme-armbian/watermark.png
 
 echo "${NAME}" > "${BUILD_DIR}"/userpatches/overlay/rebuild/rebuild-version
 

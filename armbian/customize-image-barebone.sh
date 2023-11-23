@@ -22,9 +22,26 @@ install_bins(){
     chmod +x /usr/local/bin/*
 }
 
+add_overlays(){
+    mkdir /boot/overlay-user
+    cp /tmp/overlay/dts/* /boot/overlay-user
+    armbian-add-overlay /boot/overlay-user/sun50i-a64-usb-device.dts
+}
+
+fix_netplan(){
+    cat <<- EOF > /etc/netplan/armbian-default.yaml
+		network:
+		  version: 2
+		  renderer: NetworkManager
+	EOF
+}
+
 echo "🍰 Rebuild starting..."
 
 install_bins
+add_overlays
+fix_netplan
+
 cp /tmp/overlay/rebuild/rebuild-version /etc/
 
 echo "🍰 Rebuild finished"

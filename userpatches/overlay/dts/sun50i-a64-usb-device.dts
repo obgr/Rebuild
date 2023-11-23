@@ -1,0 +1,29 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "allwinner,sun50i-a64";
+
+	fragment@0 {
+		target = <&ehci0>;
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@1 {
+		target = <&ohci0>;
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@2 {
+		target = <&usbphy>;
+		__overlay__ {
+			usb0_vbus_det-gpios = <&pio 7 10 0>;
+			usb0_vbus_power-supply = <&usb_power_supply>;
+		};
+	};
+
+};
