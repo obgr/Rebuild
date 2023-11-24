@@ -173,6 +173,20 @@ prepare_build() {
     cp /tmp/overlay/rebuild/rebuild-version /etc/refactor.version
 }
 
+add_overlays(){
+    mkdir /boot/overlay-user
+    cp /tmp/overlay/dts/* /boot/overlay-user
+    armbian-add-overlay /boot/overlay-user/sun50i-a64-usb-device.dts
+}
+
+fix_netplan(){
+    cat <<- EOF > /etc/netplan/armbian-default.yaml
+		network:
+		  version: 2
+		  renderer: NetworkManager
+	EOF
+}
+
 post_build() {
     echo "🍰 Post build"
     # Force debian to change password
@@ -189,6 +203,8 @@ install_octoprint
 install_ustreamer
 install_bins
 install_autohotspot
+add_overlays
+fix_netplan
 post_build
 
 echo "🍰 Rebuild finished"

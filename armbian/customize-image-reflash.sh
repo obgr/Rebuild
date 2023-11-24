@@ -50,10 +50,26 @@ install_autohotspot() {
     systemctl enable autohotspot.service
 }
 
+add_overlays(){
+    mkdir /boot/overlay-user
+    cp /tmp/overlay/dts/* /boot/overlay-user
+    armbian-add-overlay /boot/overlay-user/sun50i-a64-usb-device.dts
+}
+
+fix_netplan(){
+    cat <<- EOF > /etc/netplan/armbian-default.yaml
+		network:
+		  version: 2
+		  renderer: NetworkManager
+	EOF
+}
+
 set -e
 
 echo "🍰 Reflash starting..."
 prepare_install
 install_reflash
 install_autohotspot
+add_overlays
+fix_netplan
 echo "🍰 Custom script completed"
