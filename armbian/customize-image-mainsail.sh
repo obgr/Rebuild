@@ -169,7 +169,6 @@ post_build() {
 add_overlays(){
     mkdir /boot/overlay-user
     cp /tmp/overlay/dts/* /boot/overlay-user
-    armbian-add-overlay /boot/overlay-user/sun50i-a64-usb-device.dts
 }
 
 fix_netplan(){
