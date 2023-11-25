@@ -28,7 +28,7 @@ new file mode 100644
 index 0000000000..2d29fe1556
 --- /dev/null
 +++ b/arch/arm/dts/sun50i-a64-recore.dts
-@@ -0,0 +1,271 @@
+@@ -0,0 +1,269 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +// Copyright (c) 2016 ARM Ltd.
 +
@@ -286,8 +286,8 @@ index 0000000000..2d29fe1556
 +};
 +
 +&usb_otg {
-+  dr_mode = "peripheral";
-+  vcc-supply = <&reg_dcdc1>;
++	dr_mode = "peripheral";
++	vcc-supply = <&reg_dcdc1>;
 +	status = "okay";
 +};
 +
@@ -296,8 +296,6 @@ index 0000000000..2d29fe1556
 +};
 +
 +&usbphy {
-+	usb0_vbus_power-supply = <&usb_power_supply>;
-+  vcc-supply = <&reg_dcdc1>;
 +	status = "okay";
 +};
 diff --git a/configs/recore_defconfig b/configs/recore_defconfig
@@ -305,7 +303,7 @@ new file mode 100644
 index 0000000000..6ed99805ab
 --- /dev/null
 +++ b/configs/recore_defconfig
-@@ -0,0 +1,32 @@
+@@ -0,0 +1,23 @@
 +CONFIG_ARM=y
 +CONFIG_ARCH_SUNXI=y
 +CONFIG_SPL=y
@@ -315,28 +313,19 @@ index 0000000000..6ed99805ab
 +CONFIG_RESERVE_ALLWINNER_BOOT0_HEADER=y
 +CONFIG_DEFAULT_DEVICE_TREE="sun50i-a64-recore"
 +CONFIG_OF_LIST="sun50i-a64-recore"
-+CONFIG_DM_VIDEO=y
 +CONFIG_PHY_REALTEK=y
 +CONFIG_SUN8I_EMAC=y
 +CONFIG_USB_EHCI_HCD=y
 +CONFIG_USB_OHCI_HCD=y
 +CONFIG_ENV_IS_NOWHERE=y
-+#CONFIG_ENV_IS_IN_MMC=y
 +CONFIG_SPL_STACK=0x54000
 +CONFIG_SYS_PBSIZE=1024
 +CONFIG_SYS_BOOTM_LEN=0x2000000
 +CONFIG_SUPPORT_EMMC_BOOT=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_SPLASH_SCREEN_ALIGN=y
-+CONFIG_VIDEO_LOGO=y
-+CONFIG_SPLASH_SCREEN=y
-+CONFIG_BMP_16BPP=y
-+CONFIG_BMP_24BPP=y
-+CONFIG_BMP_32BPP=y
-+CONFIG_VIDEO_BMP_RLE8=y
 +CONFIG_DM_REGULATOR=y
 +CONFIG_DM_REGULATOR_FIXED=y
 +CONFIG_CMD_REGULATOR=y
++CONFIG_USE_PREBOOT=y
++CONFIG_PREBOOT="regulator status"
 --
 2.30.2
