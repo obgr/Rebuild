@@ -10,7 +10,7 @@ setenv rootdev "/dev/mmcblk0p1"
 setenv verbosity "1"
 setenv rootfstype "ext4"
 setenv console "both"
-setenv docker_optimizations "on"
+setenv docker_optimizations "off"
 setenv bootlogo "false"
 
 # Print boot source
@@ -23,6 +23,14 @@ echo "Boot script loaded from ${devtype}"
 if test -e ${devtype} ${devnum} ${prefix}armbianEnv.txt; then
 	load ${devtype} ${devnum} ${load_addr} ${prefix}armbianEnv.txt
 	env import -t ${load_addr} ${filesize}
+fi
+
+if test "${rootdev}" = "/dev/sda2"; then
+	echo "Booting from USB"
+	regulator status
+	usb reset
+	setenv devtype "usb"
+	setenv devnum 0
 fi
 
 if test "${console}" = "display" || test "${console}" = "both"; then setenv consoleargs "console=ttyS0,115200 console=tty1"; fi

@@ -7,6 +7,9 @@ MODULES="g_serial"
 BOOT_LOGO="yes"
 
 function post_family_config__shrink_atf() {
+    echo "🍰CHoose ATF branch"
+    declare -g ATFBRANCH="tag:v2.8.0"
+
     echo "🍰Shrink ATF"
     declare -g ATF_TARGET_MAP="PLAT=$ATF_PLAT DEBUG=0 SUNXI_PSCI_USE_SCPI=0 bl31;;build/$ATF_PLAT/release/bl31.bin"
 

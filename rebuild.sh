@@ -28,7 +28,7 @@ NAME="rebuild-${VERSION}-${TAG}"
 cd $BUILD_DIR
 git reset --hard
 git pull
-git checkout main
+git checkout v23.08
 rm -rf "userpatches"
 
 cd "$ROOT_DIR"
