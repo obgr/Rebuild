@@ -38,6 +38,15 @@ if ! test -d "$BUILD_DIR" ; then
     git clone https://github.com/armbian/build $BUILD_DIR
 fi
 
+IMG_DIR="../images"
+if [[ ! -e $IMG_DIR ]]; then
+    echo "Creating Output directory $IMG_DIR"
+    mkdir $IMG_DIR
+elif [[ ! -d $IMG_DIR ]]; then
+    echo "$IMG_DIR exists but not a directory"
+    exit 20 # Not a directory
+fi
+
 ROOT_DIR=$(pwd)
 TAG=$(git describe --always --tags)
 NAME="rebuild-${VERSION}-${TAG}"
@@ -62,5 +71,5 @@ cd "$BUILD_DIR"
 DOCKER_EXTRA_ARGS="--cpus=${cores}" ./compile.sh rebuild
 IMG=$(ls -1 output/images/ | grep "img.xz$")
 
-mv "$BUILD_DIR"/output/images/"$IMG" "../images/${NAME}.img.xz"
+mv "$BUILD_DIR"/output/images/"$IMG" "${IMG_DIR}/${NAME}.img.xz"
 echo "🍰 Finished building ${NAME}"
