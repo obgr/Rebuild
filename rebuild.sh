@@ -13,12 +13,11 @@ case $VERSION in
         echo "Wrong argument '$1'"
         echo "Usage: $0 <barebone|mainsail|fluidd|octoprint|reflash>"
         exit 1
-    ;; 
+    ;;
 esac
 
 # Cores
 reported_cores=$(nproc --all)
-
 if [ ! -z $cores ] && [ $cores -gt $reported_cores ]; then
     echo "😿 Desired core count greater than reported available cores."
 elif [ ! -z $cores ] && [ $cores -lt 1 ]; then
