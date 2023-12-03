@@ -3,6 +3,7 @@
 set -e
 
 VERSION=$1
+cores=$2 # Allow define No cores
 
 case $VERSION in
     barebone|mainsail|fluidd|octoprint|reflash)
@@ -14,6 +15,23 @@ case $VERSION in
         exit 1
     ;; 
 esac
+
+# Cores
+reported_cores=$(nproc --all)
+
+if [ ! -z $cores ] && [ $cores -gt $reported_cores ]; then
+    echo "😿 Desired core count greater than reported available cores."
+elif [ ! -z $cores ] && [ $cores -lt 1 ]; then
+     echo "🙀 Desired core count cannot be less than 1"
+fi
+
+if [ -z "$cores" ] || [ $cores -gt $reported_cores ] || [ $cores -lt 1 ]; then
+    echo "😻 Allowing docker to use all available cores ($reported_cores)"
+    cores=$reported_cores # Set cores to reported number of cores
+else
+    echo "😺 Allowing docker to use $cores cores"
+    cores=$reported_cores # Set cores to reported number of cores
+fi
 
 BUILD_DIR="../build-${VERSION}"
 if ! test -d "$BUILD_DIR" ; then
@@ -42,7 +60,7 @@ cp armbian/watermark.png "${BUILD_DIR}"/packages/plymouth-theme-armbian/watermar
 echo "${NAME}" > "${BUILD_DIR}"/userpatches/overlay/rebuild/rebuild-version
 
 cd "$BUILD_DIR"
-DOCKER_EXTRA_ARGS="--cpus=12" ./compile.sh rebuild
+DOCKER_EXTRA_ARGS="--cpus=${cores}" ./compile.sh rebuild
 IMG=$(ls -1 output/images/ | grep "img.xz$")
 
 mv "$BUILD_DIR"/output/images/"$IMG" "../images/${NAME}.img.xz"
