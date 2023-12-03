@@ -10,7 +10,7 @@ KLIPPER_GROUP=$KLIPPER_USER
 install_packages()
 {
     # Packages for python cffi    
-    PKGLIST="python3-virtualenv virtualenv python3-dev libffi-dev build-essential python3-cffi python3-libxml2"
+    PKGLIST="python3-virtualenv virtualenv python3-dev libffi-dev build-essential python3-cffi python3-libxml2 python3-numpy python3-matplotlib"
     # kconfig requirements
     PKGLIST="${PKGLIST} libncurses-dev"
     # hub-ctrl
@@ -25,7 +25,7 @@ install_packages()
 
     # Install desired packages
     report_status "Installing packages..."
-    sudo apt-get install --yes ${PKGLIST}
+    sudo apt-get install --yes ${PKGLIST} --no-install-suggests 
 }
 
 # Step 2: Create python virtual environment
