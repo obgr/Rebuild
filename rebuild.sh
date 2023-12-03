@@ -45,5 +45,9 @@ cd "$BUILD_DIR"
 DOCKER_EXTRA_ARGS="--cpus=12" ./compile.sh rebuild
 IMG=$(ls -1 output/images/ | grep "img.xz$")
 
-mv "$BUILD_DIR"/output/images/"$IMG" "../images/${NAME}.img.xz"
+IMGPATH="../images"
+if [[ ! -e $IMGPATH ]]; then
+    mkdir $IMGPATH
+fi
+mv "$BUILD_DIR"/output/images/"$IMG" "${IMGPATH}/${NAME}.img.xz"
 echo "🍰 Finished building ${NAME}"
