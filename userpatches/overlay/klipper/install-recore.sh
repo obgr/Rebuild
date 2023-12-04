@@ -10,7 +10,7 @@ KLIPPER_GROUP=$KLIPPER_USER
 install_packages()
 {
     # Packages for python cffi    
-    PKGLIST="python3-virtualenv virtualenv python3-dev libffi-dev build-essential python3-cffi python3-libxml2 python3-numpy python3-matplotlib"
+    PKGLIST="python3-virtualenv virtualenv python3-dev libffi-dev build-essential python3-cffi python3-libxml2"
     # kconfig requirements
     PKGLIST="${PKGLIST} libncurses-dev"
     # hub-ctrl
@@ -18,6 +18,8 @@ install_packages()
     # ARM chip installation and building
     PKGLIST="${PKGLIST} stm32flash libnewlib-arm-none-eabi"
     PKGLIST="${PKGLIST} gcc-arm-none-eabi binutils-arm-none-eabi"
+    # ADXL/Remove A1 requirements
+    PKGLIST="${PKGLIST} python3-numpy python3-matplotlib"
 
     # Update system package info
     report_status "Running apt-get update..."
