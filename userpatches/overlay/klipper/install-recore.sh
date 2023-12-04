@@ -18,6 +18,8 @@ install_packages()
     # ARM chip installation and building
     PKGLIST="${PKGLIST} stm32flash libnewlib-arm-none-eabi"
     PKGLIST="${PKGLIST} gcc-arm-none-eabi binutils-arm-none-eabi"
+    # ADXL/Remove A1 requirements
+    PKGLIST="${PKGLIST} python3-numpy python3-matplotlib"
 
     # Update system package info
     report_status "Running apt-get update..."
@@ -25,7 +27,7 @@ install_packages()
 
     # Install desired packages
     report_status "Installing packages..."
-    sudo apt-get install --yes ${PKGLIST}
+    sudo apt-get install --yes ${PKGLIST} --no-install-suggests 
 }
 
 # Step 2: Create python virtual environment
