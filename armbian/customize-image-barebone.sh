@@ -17,36 +17,24 @@ LINUXFAMILY=$2
 BOARD=$3
 BUILD_DESKTOP=$4
 
-install_bins(){
-    cp /tmp/overlay/bins/* /usr/local/bin
-    chmod +x /usr/local/bin/*
-}
+PREP_PACKAGE_LIST="avahi-daemon iptables dnsmasq-base"
 
-add_overlays(){
-    mkdir /boot/overlay-user
-    cp /tmp/overlay/dts/* /boot/overlay-user
-}
+source /tmp/overlay/install_components/reflash.sh
+source /tmp/overlay/install_components/add_overlays.sh
+source /tmp/overlay/install_components/fix_netplan.sh
 
-fix_netplan(){
-    cat <<- EOF > /etc/netplan/armbian-default.yaml
-		network:
-		  version: 2
-		  renderer: NetworkManager
-	EOF
-}
-
-prepare_build() {
+post_build() {
     echo "ttyGS0" >> /etc/securetty
     systemctl enable serial-getty@ttyGS0.service
+
+    cp /tmp/overlay/rebuild/rebuild-version /etc/
 }
 
 echo "🍰 Rebuild starting..."
 
-prepare_build
-install_bins
 add_overlays
 fix_netplan
-
-cp /tmp/overlay/rebuild/rebuild-version /etc/
+install_reflash_board
+post_build
 
 echo "🍰 Rebuild finished"

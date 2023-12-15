@@ -32,11 +32,6 @@ install_octoprint(){
 	git clone https://github.com/LazeMSS/OctoPrint-TopTemp.git
 	cd OctoPrint-TopTemp
 	/home/debian/OctoPrint/venv/bin/python setup.py install
-
-	cd /home/debian
-	git clone https://github.com/intelligent-agent/octoprint_refactor.git
-	cd octoprint_refactor/
-	/home/debian/OctoPrint/venv/bin/python setup.py install
 }
 
 install_octodash() {

@@ -30,3 +30,27 @@ prepare_build() {
     # Backwards compatibility with refactor
     cp /tmp/overlay/rebuild/rebuild-version /etc/refactor.version
 }
+
+
+prepare_build_reflash() {
+    echo "🍰 Prepare build"
+
+    apt update
+    apt install -y $PREP_PACKAGE_LIST --no-install-recommends --no-install-suggests
+
+    # Ensure the debian user exists
+    useradd debian -d /home/debian -G tty,dialout -m -s /bin/bash -e -1
+    echo "debian ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/debian
+
+    # Set default passwords
+    echo debian:temppwd | chpasswd
+    echo root:temppwd | chpasswd
+
+    # Disable SSH root access
+    sed -i 's/^PermitRootLogin.*$/#PermitRootLogin/g' /etc/ssh/sshd_config
+
+    echo "ttyGS0" >> /etc/securetty
+    systemctl enable serial-getty@ttyGS0.service
+
+    cp /tmp/overlay/rebuild/rebuild-version /etc/
+}

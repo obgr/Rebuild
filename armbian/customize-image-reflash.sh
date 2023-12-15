@@ -17,62 +17,31 @@ LINUXFAMILY=$2
 BOARD=$3
 BUILD_DESKTOP=$4
 
-prepare_install(){
-    apt update
-    apt install -y python3-flask python3-requests pv xz-utils avahi-daemon unzip nginx gunicorn expect iptables dnsmasq-base
+PREP_PACKAGE_LIST="avahi-daemon iptables dnsmasq-base"
 
-    # Set new password for root
-    sh -c 'echo root:temppwd | chpasswd'
+source /tmp/overlay/install_components/prep_install.sh
+source /tmp/overlay/install_components/add_overlays.sh
+source /tmp/overlay/install_components/reflash.sh
 
-    # Add lost+found catalog and make it readable
-    cd /boot
-    mklost+found
-    chmod +r /boot/lost+found
+local_fixups() {
+  # Add lost+found catalog and make it readable
+  cd /boot
+  mklost+found
+  chmod +r /boot/lost+found
 
-    echo "ttyGS0" >> /etc/securetty
-    systemctl enable serial-getty@ttyGS0.service
-
-}
-
-install_reflash() {
-    cd /usr/src
-    wget https://github.com/intelligent-agent/Reflash/releases/download/v0.1.2-RC2/reflash.tar.gz
-    tar -xf reflash.tar.gz
-    cd reflash
-    chmod +x ./scripts/install_reflash.sh
-    ./scripts/install_reflash.sh
-}
-
-install_autohotspot() {
-    # Install autohotspot script
-    cp /tmp/overlay/autohotspot/autohotspot /usr/local/bin
-    chmod +x /usr/local/bin/autohotspot
-
-    # Install autohotspot service file
-    cp /tmp/overlay/autohotspot/autohotspot.service /etc/systemd/system/
-
-    systemctl enable autohotspot.service
-}
-
-add_overlays(){
-    mkdir /boot/overlay-user
-    cp /tmp/overlay/dts/* /boot/overlay-user
-}
-
-fix_netplan(){
-    cat <<- EOF > /etc/netplan/armbian-default.yaml
-		network:
-		  version: 2
-		  renderer: NetworkManager
-	EOF
+  # Fix netplan error. This is probably a bugfix for Armbian. 
+  cat <<- EOF > /etc/netplan/armbian-default.yaml
+  network:
+    version: 2
+    renderer: NetworkManager
+EOF
 }
 
 set -e
 
 echo "🍰 Reflash starting..."
-prepare_install
+prepare_build_reflash
 install_reflash
-install_autohotspot
 add_overlays
-fix_netplan
+local_fixups
 echo "🍰 Custom script completed"

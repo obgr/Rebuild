@@ -7,7 +7,7 @@ MODULES="g_serial"
 BOOT_LOGO="yes"
 
 function post_family_config__shrink_atf() {
-    echo "🍰CHoose ATF branch"
+    echo "🍰Choose ATF branch"
     declare -g ATFBRANCH="tag:v2.8.0"
 
     echo "🍰Shrink ATF"

@@ -33,6 +33,7 @@ source /tmp/overlay/install_components/autohotspot.sh
 source /tmp/overlay/install_components/post_build.sh
 source /tmp/overlay/install_components/add_overlays.sh
 source /tmp/overlay/install_components/fix_netplan.sh
+source /tmp/overlay/install_components/reflash.sh
 
 set -e
 echo "🍰 Rebuild starting..."
@@ -45,6 +46,7 @@ install_klipperscreen
 install_ustreamer
 install_bins
 install_autohotspot
+install_reflash_board
 add_overlays
 fix_netplan
 post_build

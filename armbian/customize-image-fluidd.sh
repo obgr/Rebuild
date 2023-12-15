@@ -32,6 +32,7 @@ source /tmp/overlay/install_components/prep_install.sh
 source /tmp/overlay/install_components/add_overlays.sh
 source /tmp/overlay/install_components/fix_netplan.sh
 source /tmp/overlay/install_components/post_build.sh
+source /tmp/overlay/install_components/reflash.sh
 
 echo "🍰 Rebuild starting..."
 
@@ -46,8 +47,11 @@ install_klipperscreen
 install_ustreamer
 install_bins
 install_autohotspot
+install_reflash_board
 add_overlays
 fix_netplan
 post_build
+
+systemctl disable getty@tty1.service
 
 echo "🍰 Rebuild finished"
