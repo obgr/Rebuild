@@ -6,13 +6,13 @@ VERSION=$1
 cores=$2 # Allow define No cores
 
 case $VERSION in
-    barebone|mainsail|fluidd|octoprint)
-        echo "🍰 Building $VERSION"
-        ;;
-    *)
-        echo "Wrong argument '$1'"
-        echo "Usage: $0 <barebone|mainsail|fluidd|octoprint>"
-        exit 1
+barebone | mainsail | fluidd | octoprint)
+    echo "🍰 Building $VERSION"
+    ;;
+*)
+    echo "Wrong argument '$1'"
+    echo "Usage: $0 <barebone|mainsail|fluidd|octoprint>"
+    exit 1
     ;;
 esac
 
@@ -21,7 +21,7 @@ reported_cores=$(nproc --all)
 if [ ! -z $cores ] && [ $cores -gt $reported_cores ]; then
     echo "😿 Desired core count greater than reported available cores."
 elif [ ! -z $cores ] && [ $cores -lt 1 ]; then
-     echo "🙀 Desired core count cannot be less than 1"
+    echo "🙀 Desired core count cannot be less than 1"
 fi
 
 if [ -z "$cores" ] || [ $cores -gt $reported_cores ] || [ $cores -lt 1 ]; then
@@ -33,7 +33,7 @@ else
 fi
 
 BUILD_DIR="../build-${VERSION}"
-if ! test -d "$BUILD_DIR" ; then
+if ! test -d "$BUILD_DIR"; then
     echo "$BUILD_DIR missing"
     git clone https://github.com/armbian/build $BUILD_DIR
 fi
@@ -65,7 +65,8 @@ rm -f "${BUILD_DIR}/patch/u-boot/u-boot-sunxi/allwinner-boot-splash.patch"
 
 cp armbian/watermark.png "${BUILD_DIR}"/packages/plymouth-theme-armbian/watermark.png
 
-echo "${NAME}" > "${BUILD_DIR}"/userpatches/overlay/rebuild/rebuild-version
+mkdir -p "${BUILD_DIR}"/userpatches/overlay/rebuild/
+echo "${NAME}" >"${BUILD_DIR}"/userpatches/overlay/rebuild/rebuild-version
 
 cd "$BUILD_DIR"
 DOCKER_EXTRA_ARGS="--cpus=${cores}" ./compile.sh rebuild
