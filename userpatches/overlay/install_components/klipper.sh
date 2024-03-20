@@ -9,6 +9,7 @@ install_klipper(){
     cp /tmp/overlay/klipper/thermocouple.py /home/debian/klipper/klippy/extras/
     cp /tmp/overlay/klipper/generic-recore-a6.cfg /home/debian/klipper/config/
     cp /tmp/overlay/klipper/generic-recore-a7.cfg /home/debian/klipper/config/
+    cp /tmp/overlay/klipper/generic-recore-a8.cfg /home/debian/klipper/config/
     # Add compatibility with A5. 
     cp /tmp/overlay/klipper/recore_a5.py /home/debian/klipper/klippy/extras/
     cp /tmp/overlay/klipper/recore_adc_temperature.py /home/debian/klipper/klippy/extras/

@@ -10,4 +10,5 @@ install_moonraker(){
     su -c "/home/debian/moonraker/scripts/set-policykit-rules.sh" debian
     cp /tmp/overlay/moonraker/moonraker-"${UI}".conf /home/debian/printer_data/config/moonraker.conf
     cp /tmp/overlay/moonraker/moonraker.asvc /home/debian/printer_data/
+    chown debian:debian moonraker /home/debian/printer_data/moonraker.asvc
 }
