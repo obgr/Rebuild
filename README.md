@@ -8,6 +8,6 @@ Armbian images for Recore.
 * Rebuild-Fluidd - Comes with Klipper, Moonraker and Fluidd
 * Rebuild-OctoPrint - Comes with Klipper and OctoPrint
 
-To build a barebone version:
-`./rebuild barebone`
+To build a version, run the script in this folder:
+`./rebuild <barebone|fluidd|mainsail|octoprint>`
 

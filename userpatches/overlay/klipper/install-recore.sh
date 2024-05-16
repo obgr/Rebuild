@@ -13,8 +13,8 @@ install_packages()
     PKGLIST="python3-virtualenv virtualenv python3-dev libffi-dev build-essential python3-cffi python3-libxml2"
     # kconfig requirements
     PKGLIST="${PKGLIST} libncurses-dev"
-    # hub-ctrl
-    PKGLIST="${PKGLIST} libusb-dev"
+    # hub-ctrl and rp2040 flasher
+    PKGLIST="${PKGLIST} libusb-dev libusb-1.0-0-dev"
     # ARM chip installation and building
     PKGLIST="${PKGLIST} stm32flash libnewlib-arm-none-eabi"
     PKGLIST="${PKGLIST} gcc-arm-none-eabi binutils-arm-none-eabi"
@@ -74,7 +74,12 @@ EOF
     sudo systemctl enable klipper.service
 }
 
-# Step 4: Start host software
+# Step 4: Install numpy after creating virtualenv
+install_numpy(){
+    /home/debian/klippy-env/bin/pip install -v numpy
+}
+
+# Step 5: Start host software
 start_software()
 {
     report_status "Launching Klipper host software..."
@@ -106,4 +111,5 @@ verify_ready
 install_packages
 create_virtualenv
 install_script
+install_numpy
 start_software
